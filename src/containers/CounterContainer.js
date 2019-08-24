@@ -1,30 +1,33 @@
 import React, { Component } from 'react';
 import Counter from '../components/Counter';
-import * as counterActions from '../store/modules/counter';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { increment, decrement } from '../store/modules/counter';
 
 class CounterContainer extends Component {
 	render() {
-		const { number, CounterActions, color } = this.props;
+		const { increment, decrement, number, color } = this.props;
+
 		return (
-			<Counter
-				number={number}
-				onIncrement={CounterActions.increment}
-				onDecrement={CounterActions.decrement}
-				color={color}
-			/>
+			<div>
+				<Counter
+					onIncrement={increment}
+					onDecrement={decrement}
+					number={number}
+					color={color}
+				/>
+			</div>
 		);
 	}
 }
 
-const mapStateToProps = state => ({
-	number: state.counter.number,
-	color: state.counter.color
+const mapStateToProps = ({ counter: { number, color } }) => ({
+	number,
+	color
 });
 
 const mapDispatchToProps = dispatch => ({
-	CounterActions: bindActionCreators(counterActions, dispatch)
+	increment: () => dispatch(increment()),
+	decrement: () => dispatch(decrement())
 });
 
 export default connect(
